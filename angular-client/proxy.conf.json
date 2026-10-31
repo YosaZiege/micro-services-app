@@ -1,0 +1,17 @@
+{
+  "/customer-service": {
+    "target": "http://localhost:8888",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/inventory-service": {
+    "target": "http://localhost:8888",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/billing-service": {
+    "target": "http://localhost:8888",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
