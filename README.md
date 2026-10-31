@@ -14,6 +14,7 @@ Chaque facture (bill) contient des produits (product items) et appartient à un 
 | `customer-service`   | 8081  | Gestion des clients                             |
 | `inventory-service`  | 8082  | Gestion des produits                            |
 | `billing-service`    | 8083  | Gestion des factures (OpenFeign)                |
+| `angular-client`     | 4200  | Client web (Angular)                            |
 
 ## Démarrage
 
@@ -25,10 +26,41 @@ L'ordre de démarrage recommandé :
 4. `inventory-service`
 5. `billing-service`
 6. `gateway-service`
+7. `angular-client`
+
+### Services backend
 
 ```bash
 cd <service> && ./mvnw spring-boot:run
 ```
+
+### Client Angular
+
+Le client communique avec la gateway via un proxy de développement :
+
+```bash
+cd angular-client && npm install && npm start
+```
+
+Accès : <http://localhost:4200>
+
+## Routes de la gateway (routage dynamique via Eureka)
+
+| URL                                                              | Service           |
+|------------------------------------------------------------------|-------------------|
+| `http://localhost:8888/customer-service/api/customers`           | customer-service  |
+| `http://localhost:8888/inventory-service/api/products`           | inventory-service |
+| `http://localhost:8888/billing-service/bills/{id}`               | billing-service   |
+
+## Configuration centralisée
+
+Le `config-service` utilise le profil `native` et lit les fichiers de
+configuration depuis `config-service/src/main/resources/config-repo/` :
+
+- `application.properties` : configuration partagée (Eureka, actuator, …)
+- `{service}-{profile}.properties` : configuration spécifique à chaque service
+
+Exemple de test : `GET http://localhost:8888/customer-service/testConfig1`
 
 ## Stack
 
@@ -38,4 +70,4 @@ cd <service> && ./mvnw spring-boot:run
 - Spring Cloud Gateway, Eureka, Config, OpenFeign
 - Spring Data JPA / Spring Data REST
 - H2 (base de données en mémoire)
-- Angular (client web)
+- Angular 21
