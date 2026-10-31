@@ -30,9 +30,15 @@ L'ordre de démarrage recommandé :
 
 ### Services backend
 
+Prérequis : Java 17 et Maven installés. Ouvrir un terminal par service et
+attendre que chacun soit démarré avant de lancer le suivant.
+
 ```bash
-cd <service> && ./mvnw spring-boot:run
+cd <service> && mvn spring-boot:run
 ```
+
+Chaque service dispose de son propre `pom.xml` ; le dépôt ne contient pas de
+script `mvnw`. Pour compiler un service : `cd <service> && mvn verify`.
 
 ### Client Angular
 
@@ -60,7 +66,13 @@ configuration depuis `config-service/src/main/resources/config-repo/` :
 - `application.properties` : configuration partagée (Eureka, actuator, …)
 - `{service}-{profile}.properties` : configuration spécifique à chaque service
 
-Exemple de test : `GET http://localhost:8888/customer-service/testConfig1`
+Exemples de vérification après démarrage :
+
+```bash
+curl http://localhost:9999/customer-service/default
+curl http://localhost:8888/customer-service/testConfig1
+curl http://localhost:8888/billing-service/bills/1
+```
 
 ## Stack
 
